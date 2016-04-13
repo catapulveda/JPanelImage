@@ -15,8 +15,8 @@ import java.beans.*;
      public JPanelImageBeanInfo(){
          icon = loadImage("/Imagenes/x16.gif");
          icon32 = loadImage("/Imagenes/x32.gif");
-         iconM = loadImage("/Imagenes/x16.gif");
-         icon32M = loadImage("/Imagenes/x32.gif");
+         iconM = loadImage("/Imagenes/x16M.gif");
+         icon32M = loadImage("/Imagenes/x32M.gif");
      }
      
      @Override

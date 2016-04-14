@@ -9,14 +9,14 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
  
-public class JPanelConFondo extends JPanel {
+public class JPanelImage extends JPanel {
  
     private Image imagen;
  
-    public JPanelConFondo() {
+    public JPanelImage() {
     }
  
-    public JPanelConFondo(String nombreImagen) {
+    public JPanelImage(String nombreImagen){
         if (nombreImagen != null) {
             imagen = new ImageIcon(
                            getClass().getResource(nombreImagen)
@@ -24,7 +24,7 @@ public class JPanelConFondo extends JPanel {
         }
     }
  
-    public JPanelConFondo(Image imagenInicial) {
+    public JPanelImage(Image imagenInicial) {
         if (imagenInicial != null) {
             imagen = imagenInicial;
         }

@@ -89,9 +89,7 @@ public class JPanelImage extends JPanel{
     }
  
     public void setImagen_ImageIcon(ImageIcon nombreImagen) {
-        if (nombreImagen != null) {
-            imagen = nombreImagen.getImage();
-        }
+        imagen = nombreImagen.getImage();
         repaint();
     }
  
@@ -105,8 +103,8 @@ public class JPanelImage extends JPanel{
         repaint();
     }
     
-    public BufferedImage getImagen(){
-        return (BufferedImage) imagen;
+    public Image getImagen(){
+        return imagen;
     }
  
     @Override

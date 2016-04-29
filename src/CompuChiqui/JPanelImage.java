@@ -25,7 +25,7 @@ import javax.swing.border.LineBorder;
  
 public class JPanelImage extends JPanel{
  
-    private Image imagen = new ImageIcon(getClass().getResource("/Imagenes/fondo.png")).getImage();
+    private Image imagen;// = new ImageIcon(getClass().getResource("/Imagenes/fondo.png")).getImage();
  
     public JPanelImage() {
         
@@ -59,7 +59,7 @@ public class JPanelImage extends JPanel{
                             dtde.acceptDrop(DnDConstants.ACTION_COPY);
                             List<File> lista = (List<File>)dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
                             if(lista.size()==1){                              
-                                setImagen(ImageIO.read(new File(lista.get(0).getAbsolutePath())));
+                                setImagen_BufferedImage(ImageIO.read(new File(lista.get(0).getAbsolutePath())));
                                 setBorder(javax.swing.BorderFactory.createEtchedBorder());
                             }else if(lista.size()>1){
                                 JOptionPane.showMessageDialog(null, "SÓLO UNA IMGAEN A LA VEZ.");
@@ -88,29 +88,25 @@ public class JPanelImage extends JPanel{
         }
     }
  
-    public void setImagen(String nombreImagen) {
+    public void setImagen_ImageIcon(ImageIcon nombreImagen) {
         if (nombreImagen != null) {
-            imagen = new ImageIcon(getClass().getResource(nombreImagen)).getImage();
+            imagen = nombreImagen.getImage();
         }
         repaint();
     }
  
-    public void setImagen(Image nuevaImagen) {
+    public void setImagen_Image(Image nuevaImagen) {
         imagen = nuevaImagen;
         repaint();
     }
     
-    public void setImagen(BufferedImage nuevaImagen){
+    public void setImagen_BufferedImage(BufferedImage nuevaImagen){
         imagen = nuevaImagen;
         repaint();
     }
     
     public BufferedImage getImagen(){
         return (BufferedImage) imagen;
-    }
-    
-    public void setImagenDefault(){
-        imagen = new ImageIcon(getClass().getResource("/Imagenes/fondo.png")).getImage();
     }
  
     @Override

@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
  
-public class JPanelImage extends JPanel implements MouseListener, MouseMotionListener{
+public class JPanelImage extends JPanel implements MouseListener, MouseMotionListener, DropTargetListener{
  
     private Image imagen;// = new ImageIcon(getClass().getResource("/Imagenes/fondo.png")).getImage();
     private boolean dibujar = false;
@@ -35,50 +35,9 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
  
     public JPanelImage() {
         
-        setDropTarget(new DropTarget(this, new DropTargetListener() {
-            @Override
-            public void dragEnter(DropTargetDragEvent dtde) {
-                setBorder(new LineBorder(new Color(221, 75, 57, 200), 2));
-            }
-
-            @Override
-            public void dragOver(DropTargetDragEvent dtde) {
-                
-            }
-
-            @Override
-            public void dropActionChanged(DropTargetDragEvent dtde) {
-                
-            }
-
-            @Override
-            public void dragExit(DropTargetEvent dte) {
-                setBorder(javax.swing.BorderFactory.createEtchedBorder());
-            }
-
-            @Override
-            public void drop(DropTargetDropEvent dtde) {
-                try {
-                    if (dtde.getDropAction() == 2) {
-                        dtde.acceptDrop(dtde.getDropAction());
-                        if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                            dtde.acceptDrop(DnDConstants.ACTION_COPY);
-                            List<File> lista = (List<File>)dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                            if(lista.size()==1){                              
-                                setImagen_BufferedImage(ImageIO.read(new File(lista.get(0).getAbsolutePath())));
-                                setBorder(javax.swing.BorderFactory.createEtchedBorder());
-                            }else if(lista.size()>1){
-                                JOptionPane.showMessageDialog(null, "SÓLO UNA IMGAEN A LA VEZ.");
-                            }
-                        }else{
-                            JOptionPane.showMessageDialog(null, "ÉSTE TIPO DE ARCHIVO NO ES SOPORTADO.");
-                        }
-                    }
-                } catch (Exception e) {
-                    
-                }
-            }
-        }));
+        setDropTarget(new DropTarget(this, this));
+        addMouseListener( this ); 
+    	addMouseMotionListener( this ); 
         
     }
  
@@ -112,10 +71,13 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
     public Image getImagen(){
         return imagen;
     }
+    
+    public void setDibujable(boolean dibujar){
+        this.dibujar = dibujar;
+    }
  
     @Override
-    public void paint(Graphics g){
-        super.paint(g);
+    public void paint(Graphics g){            
         if (imagen != null) {
             g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
             setOpaque(false);
@@ -131,6 +93,7 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
             y = height < 0 ? y1 : y2;
             g.drawRect( x, y , w, h );
         }
+        super.paint(g);
     }
 
     @Override
@@ -139,13 +102,14 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(MouseEvent e){
         dibujar = true;
         x1 = e.getX();
         y1 = e.getY();  
         x2=x1;
         y2=y1;
         repaint();
+        System.out.println("Preseed");
     }
 
     @Override
@@ -170,6 +134,7 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
         x = e.getX();
         y = e.getY();       
         repaint();
+        System.out.println("Dragged");
     }
 
     @Override
@@ -177,6 +142,49 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
         x = e.getX();
         y = e.getY();        
         repaint();
+    }
+
+    @Override
+    public void dragEnter(DropTargetDragEvent dtde) {
+        setBorder(new LineBorder(new Color(221, 75, 57, 200), 2));
+    }
+
+    @Override
+    public void dragOver(DropTargetDragEvent dtde) {
+        
+    }
+
+    @Override
+    public void dropActionChanged(DropTargetDragEvent dtde) {
+        
+    }
+
+    @Override
+    public void dragExit(DropTargetEvent dte) {
+        setBorder(javax.swing.BorderFactory.createEtchedBorder());
+    }
+
+    @Override
+    public void drop(DropTargetDropEvent dtde) {
+        try {
+            if (dtde.getDropAction() == 2) {
+                dtde.acceptDrop(dtde.getDropAction());
+                if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    dtde.acceptDrop(DnDConstants.ACTION_COPY);
+                    List<File> lista = (List<File>)dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    if(lista.size()==1){                              
+                        setImagen_BufferedImage(ImageIO.read(new File(lista.get(0).getAbsolutePath())));
+                        setBorder(javax.swing.BorderFactory.createEtchedBorder());
+                    }else if(lista.size()>1){
+                        JOptionPane.showMessageDialog(null, "SÓLO UNA IMGAEN A LA VEZ.");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "ÉSTE TIPO DE ARCHIVO NO ES SOPORTADO.");
+                }
+            }
+        } catch (Exception e) {
+
+        }
     }
 
 }

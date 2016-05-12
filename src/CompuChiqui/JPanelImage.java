@@ -30,9 +30,9 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
  
     private Image imagen;// = new ImageIcon(getClass().getResource("/Imagenes/fondo.png")).getImage();
     private boolean dibujar = false;
-    private int x1,y1,x2,y2,w,h;
-    private int x,y;
- 
+
+    public int x1,y1,x2,y2,w,h, x, y;
+    
     public JPanelImage() {
         
         setDropTarget(new DropTarget(this, this));
@@ -77,11 +77,12 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
     }
  
     @Override
-    public void paint(Graphics g){            
-        if (imagen != null) {
+    public void paint(Graphics g){
+                
+        if(imagen != null){
             g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
             setOpaque(false);
-        } else {
+        }else{
             setOpaque(true);
         }
         if(dibujar){
@@ -93,6 +94,7 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
             y = height < 0 ? y1 : y2;
             g.drawRect( x, y , w, h );
         }
+//        g.drawString( "X,Y: [" + x + "," + y, 10, 20 );
         super.paint(g);
     }
 
@@ -108,12 +110,12 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
         y1 = e.getY();  
         x2=x1;
         y2=y1;
-        repaint();
-        System.out.println("Preseed");
+        repaint();      
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        System.out.println("mouseReleased");
         dibujar = false;
     }
 
@@ -134,7 +136,6 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
         x = e.getX();
         y = e.getY();       
         repaint();
-        System.out.println("Dragged");
     }
 
     @Override
@@ -186,5 +187,37 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
 
         }
     }
+
+//    public int getX1() {
+//        return x1;
+//    }
+//
+//    public int getY1() {
+//        return y1;
+//    }
+//
+//    public int getX2() {
+//        return x2;
+//    }
+//
+//    public int getY2() {
+//        return y2;
+//    }
+//
+//    public int getW() {
+//        return w;
+//    }
+//
+//    public int getH() {
+//        return h;
+//    }
+//
+//    public int getX() {
+//        return x;
+//    }
+//
+//    public int getY() {
+//        return y;
+//    }
 
 }

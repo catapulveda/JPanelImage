@@ -110,7 +110,7 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(MouseEvent e){
         if(SwingUtilities.isRightMouseButton(e)){
              try{    
                 JPopupMenu menu = new JPopupMenu();

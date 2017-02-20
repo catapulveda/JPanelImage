@@ -1,11 +1,13 @@
 package CompuChiqui;
-
 /**
  *
- * @author AUXPLANTA
+ * @author COMPUCHIQI
  */
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamException;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
@@ -22,13 +24,17 @@ import java.io.File;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
  
-public class JPanelImage extends JPanel implements MouseListener, MouseMotionListener, DropTargetListener{
- 
-    private Image imagen;// = new ImageIcon(getClass().getResource("/Imagenes/fondo.png")).getImage();
+public class JPanelImage extends JPanel implements MouseListener, MouseMotionListener, DropTargetListener{     
+    
+    private Image imagen;// = new  ImageIcon(getClass().getResource("/Imagenes/fondo.png")).getImage();
     private boolean dibujar = false;
 
     public int x1,y1,x2,y2,w,h, x, y;
@@ -53,6 +59,9 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
         }
     }
  
+    /*
+    *@nombreImagen Asigna una imagem de tipo ImageIcon al JPanel para mostrar.
+    */
     public void setImagen_ImageIcon(ImageIcon nombreImagen) {
         imagen = nombreImagen.getImage();
         repaint();
@@ -72,13 +81,15 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
         return imagen;
     }
     
+    /*
+    *@dibujar Habilita la opcion de repintar recuadros dibujados con el mouse.
+    */
     public void setDibujable(boolean dibujar){
         this.dibujar = dibujar;
     }
  
     @Override
-    public void paint(Graphics g){
-                
+    public void paint(Graphics g){                
         if(imagen != null){
             g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
             setOpaque(false);
@@ -100,7 +111,20 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        
+        if(SwingUtilities.isRightMouseButton(e)){
+             try{    
+                JPopupMenu menu = new JPopupMenu();
+                menu.add(new JMenuItem("Seleccione una camara"));
+                int webCamCounter = 1;
+                for (Webcam webcam : Webcam.getWebcams()){
+                    menu.add(new JMenuItem(new clases.WebCamInfo(webcam.getName(), webCamCounter).toString()));
+                    webCamCounter++;
+                }
+                menu.show(this, e.getPoint().x, e.getPoint().y);
+            } catch (WebcamException | HeadlessException ex){
+                JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado\n"+ex);
+            } 
+        }
     }
 
     @Override

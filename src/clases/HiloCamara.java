@@ -1,7 +1,6 @@
 package clases;
 
 import CompuChiqui.JPanelImage;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import javax.swing.JPanel;
@@ -32,10 +31,9 @@ public class HiloCamara extends Thread{
         
     @Override
     public void run(){
-        try {
+        try{
             if(video.open(camaraID)){
-                int numCaras = 0;//VARIABLE QUE SE USA PARA CONTAR LAS CARAS DETECTADAS EN EL MOMENTO DE LA DETECCION
-                while(video.read(imagen)){                   
+                while(video.read(imagen)){
                     panelCamara.setImagen_BufferedImage(toBufferedImage(imagen));
                 }
             }

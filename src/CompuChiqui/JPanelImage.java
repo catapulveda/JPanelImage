@@ -56,9 +56,11 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
     private static VideoCapture video = new VideoCapture();    
     private Mat imagenMat = new Mat();
     
+    private HiloCamara hiloCamara;
+    
     private JPopupMenu menu = new JPopupMenu();
     
-    public JPanelImage() {
+    public JPanelImage(){
         loadLibrary();
         setDropTarget(new DropTarget(this, this));
         addMouseListener( this ); 
@@ -104,25 +106,7 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
     @Override
     public void mouseClicked(MouseEvent e){
         if(SwingUtilities.isRightMouseButton(e)){
-             try{                 
-                menu.removeAll();
-                JMenuItem subMenu;
-                int webCamCounter = 0;
-                WebCamInfo camara = null;
-                for (Webcam webcam : Webcam.getWebcams()){
-                    camara = new clases.WebCamInfo(webcam.getName(), webCamCounter);
-                    subMenu = new JMenuItem(camara.toString());
-                    subMenu.setIcon(new ImageIcon(getClass().getResource("/Imagenes/camara.png")));
-                    menu.add(subMenu);
-                    webCamCounter++;
-                }
-                menu.show(this, e.getPoint().x, e.getPoint().y);
-            } catch (WebcamException | HeadlessException ex){
-                JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado\n"+ex);
-            } 
-        }
-        if(e.getSource() == menu){
-            JOptionPane.showMessageDialog(null, menu);
+             menu.show(this, e.getPoint().x, e.getPoint().y);
         }
     }
 
@@ -336,6 +320,24 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
         }catch(Exception e){
         }
         return image;
+    }
+    
+    public void cargarCamaras(){
+        try{                 
+            menu.removeAll();
+            JMenuItem subMenu;
+            int webCamCounter = 0;
+            WebCamInfo camara = null;
+            for (Webcam webcam : Webcam.getWebcams()){
+                camara = new clases.WebCamInfo(webcam.getName(), webCamCounter);
+                subMenu = new JMenuItem(camara.toString());
+                subMenu.setIcon(new ImageIcon(getClass().getResource("/Imagenes/camara.png")));
+                menu.add(subMenu);
+                webCamCounter++;
+            }
+        }catch (WebcamException | HeadlessException ex){
+            JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado\n"+ex);
+        }
     }
 
 }

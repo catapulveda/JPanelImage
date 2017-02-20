@@ -114,7 +114,6 @@ public class JPanelImage extends JPanel implements MouseListener, MouseMotionLis
         if(SwingUtilities.isRightMouseButton(e)){
              try{    
                 JPopupMenu menu = new JPopupMenu();
-                menu.add(new JMenuItem("Seleccione una camara"));
                 int webCamCounter = 1;
                 for (Webcam webcam : Webcam.getWebcams()){
                     menu.add(new JMenuItem(new clases.WebCamInfo(webcam.getName(), webCamCounter).toString()));
